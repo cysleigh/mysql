@@ -22,7 +22,16 @@ c.hid = d.hid
 select sum(fee) from bill
 
 //sum 分組總和
-SELECT tel, SUM(fee) FROM bill GROUP by tel
+SELECT tel, SUM(fee) FROM bill GROUP by tel;
 
 //avg 分組平均
-select tel,avg(fee) from bill group by tel
+select tel,avg(fee) from bill group by tel;
+
+//sql 取小數點下幾位 round
+select tel,round(avg(fee),0) from bill group by tel;
+
+//avg為算出來的  所以group by 也要一起算才能正確'
+select bill.tel,round(avg(fee),0) as '平均金額',phone.hid
+from bill ,phone 
+where bill.hid = phone.hid
+group by bill.tel,phone.hid
