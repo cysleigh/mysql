@@ -17,3 +17,12 @@ from userinfo as a, live as b,house as c,phone as d
 where a.uid = b.uid and
 b.hid = c.hid and
 c.hid = d.hid
+
+//sum 總和
+select sum(fee) from bill
+
+//sum 分組總和
+SELECT tel, SUM(fee) FROM bill GROUP by tel
+
+//avg 分組平均
+select tel,avg(fee) from bill group by tel
