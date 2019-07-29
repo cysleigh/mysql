@@ -1,0 +1,170 @@
+SQL
+
+1.資料庫檔案為放在同一籃雞蛋模式 >備份很重要
+備份模式
+1.完整備份 >通常一個禮拜備份一次
+2.差異備份(備份更新的部分) >每天備份一次
+3.交易備份(備份指令，造成更改狀態的指令) >每半小時備份
+
+>>風險評估
+若是每分每秒，備份則無法滿足，原因:還原備份遺失(最少需要四小時)
+
+---------------------------------------------------------------
+備援(同時有兩套資料庫在運作) >hisize備援
+>>風險損失最低，價格最高 規格相同
+
+遠傳 > 異地備援
+
+---------------------------------------------------------------
+
+資料庫類型
+關連式?例如：SQL Server、Oracle、Access...等
+>>資料要有規矩，效能才能提高
+
+
+文本式（Document-based、NoSQL）?例如：MongoDB、Apache Cassandra
+>>處理量基本以P起跳(1024T)
+>>國際型大數據(google)
+>>儲存形式 無規矩
+
+---------------------------------------------------------------
+資料定義語言（DDL, data definition language）
+Create: 建立資料庫物件?Alter: 變更資料庫物件?Drop: 刪除資料庫物件
+
+---------------------------------------------------------------
+
+資料操作語言（DML, data manipulation language）
+?Insert Into: 插入資料
+?Update: 修改資料
+?Delete: 刪除資料
+
+資料查詢語言（DQL, data query language）>>效能瓶頸主要會出現在查詢
+?Select: 查詢資料
+
+資料控制語言（DCL, data control language）
+?Grant: 設定權限
+?Revoke: 取消權限
+
+資料交易有關指令(成功、失敗)
+?Commit: 確認交易完成
+?Rollback: 交易失敗回復原始狀
+
+-----------------------------------------------------------------
+table >資料表
+Field >欄位
+多表合一 > 關聯性在心中 >要有說明文件
+-----------------------------------------------------------------
+線性搜尋 > 一筆一筆查看
+群的資料越少越好
+建立索引 > 線性搜尋 >找到資料
+
+一網打盡排列(消耗大量硬碟空間)
+2^x-1 *2(由小到大)
+
+排序 >羅馬拼音排(MYSQL) 
+
+建議設索引的欄位：
+?關連線兩端的欄位
+?查詢「條件」的欄位
+------------------------------------------------------------------
+主索引(PK) >>資料不能重複、不能空著不打、可以是複合欄位
+
+
+參考索引(FK) >>維持資料兩個表正確性
+
+-------------------------------------------------------------------
+varchar 變動長度
+char    固定的長度
+TEXT    超大文字資料(4G)
+一個中文等於4個長度
+------------------------------------------------------------------
+建立資料表
+CREATE TABLE `test`.`userinfo` ( `id` VARCHAR(10) NOT NULL , 
+`姓名` VARCHAR(40) NULL , `屋號` INT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+修改參考索引
+ALTER TABLE `userinfo` ADD CONSTRAINT `fk_abc` FOREIGN KEY (`屋號`) REFERENCES `house`(`屋號`) 
+ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-------------------------------
+alter
+第一正規化 >每一個欄位內只能放一個值
+第二正規化 >要求資料表中的所有欄位都要與PK完全依賴
+第三正規化 >非鍵欄位之間彼此不能依賴
+
+-------------------------------------------------------------
+between  XX and XX  包含  
+
+not between XX and XX 不包含
+
+<>不等於
+
+select * from - where
+
+where in('','') = or  >列出裡面的值資料
+
+where notin           >列出沒在框框值內的資料
+
+ORDER BY 排序 由小到大
+
+ORDER BY DESC排序 由大到小
+
+convert(cname using big5) 按照中文筆畫數
+
+NULL 完全沒輸入過資料 >若沒做處理，程式會當掉
+
+空字串 > 輸入後刪除
+
+ifnull(cname,'') 取代NULL等於空字串
+
+cname is null 列出NULL
+
+count(*) 記數 >用於登入驗證
+
+
+資料庫處理步驟 > 先合併
+
+SELECT * FROM userinfo,live,house,phone WHERE userinfo.uid=live.uid AND live.hid = house.hid AND house.hid = phone.hid
+
+SELECT live.uid, cname, address, tel
+FROM userinfo,live,house,phone 
+WHERE userinfo.uid=live.uid AND 
+	live.hid = house.hid AND 
+	house.hid = phone.hid AND
+    cname = '王大明'
+
+SELECT userinfo.uid,address,tel
+FROM userinfo LEFT JOIN live ON
+	 userinfo.uid = live.uid
+     LEFT JOIN  house ON 
+     live.hid = house.hid
+     LEFT JOIN  phone ON 
+     house.hid = phone.hid
+
+SELECT userinfo.uid,address,tel
+FROM phone RIGHT JOIN house ON
+	 phone.hid = house.hid
+     RIGHT JOIN  live ON 
+     house.hid = live.hid
+     RIGHT JOIN  userinfo ON 
+     live.uid = userinfo.uid
+
+SELECT address,userinfo.uid,cname
+FROM house RIGHT JOIN live ON
+	 house.hid = live.hid
+     RIGHT JOIN  userinfo ON 
+     live.uid = userinfo.uid
+
+
+
+LEFT JOIN 、 INNER JOIN
+
+關連線處理-JOIN四種類型
+◦INNER JOIN◦關連線左右兩邊均有資料
+◦LEFT OUTER JOIN◦關連線左側資料較多
+◦RIGHT OUTER JOIN◦關連線右側資料較多
+◦CROSS JOIN◦未設定關連而形成交叉對應朱克剛資料庫14
+
+功課
+//所有屋子的住戶清單 (限用右側外部連結)
+//把SQL 指令 PO在GITHUB上面
