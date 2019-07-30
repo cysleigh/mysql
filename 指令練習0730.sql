@@ -47,6 +47,91 @@ from(
 )as bb
 where aa.max_sum_fee = bb.sum_fee;
 
+//每個人電話表
+select cname,max_n
+from(
+    select max(n) as max_n
+    from(
+        select cname ,COUNT(c.tel) as n
+        from userinfo as a, live as b,phone as c
+        where 
+        a.uid = b.uid and
+        b.hid = c.hid
+        GROUP by cname
+    )as aa
+)as aaa,(
+    select cname ,COUNT(c.tel) as n
+    from userinfo as a, live as b,phone as c
+    where 
+    a.uid = b.uid and
+    b.hid = c.hid
+    GROUP by cname
+)as bb
+where aaa.max_n = bb.n
+
+select cname ,c.tel
+from userinfo as a, live as b,phone as c
+where 
+a.uid = b.uid and
+b.hid = c.hid
+
+select userinfo.uid, count(tel) as n
+from userinfo left join live on
+    userinfo.uid = live.uid
+    left join phone on
+    live.hid = phone.hid
+    group by userinfo.uid
+
+
+//最多電話費
+select uid,max_n
+from(
+    select max(n) as max_n
+    from(
+        select userinfo.uid, count(tel) as n
+        from userinfo left join live on
+        userinfo.uid = live.uid
+        left join phone on
+        live.hid = phone.hid
+        group by userinfo.uid
+    )as a
+)as aa,(
+    select userinfo.uid, count(tel) as n
+    from userinfo left join live on
+    userinfo.uid = live.uid
+    left join phone on
+    live.hid = phone.hid
+    group by userinfo.uid
+)as bb
+where aa.max_n = bb.n
+//第二種方式
+select cname,max_n
+from(
+    select max(n) as max_n
+    from(
+        select cname ,COUNT(c.tel) as n
+        from userinfo as a, live as b,phone as c
+        where 
+        a.uid = b.uid and
+        b.hid = c.hid
+        GROUP by cname
+    )as aa
+)as aaa,(
+    select cname ,COUNT(c.tel) as n
+    from userinfo as a, live as b,phone as c
+    where 
+    a.uid = b.uid and
+    b.hid = c.hid
+    GROUP by cname
+)as bb
+where aaa.max_n = bb.n
+
+select cname ,c.tel
+from userinfo as a, live as b,phone as c
+where 
+a.uid = b.uid and
+b.hid = c.hid
+
 
 
 

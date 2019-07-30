@@ -1,4 +1,5 @@
 SQL
+https://onedrive.live.com/?authkey=%21APltVJK1JpTufYs&cid=4C1040608517D40B&id=4C1040608517D40B%21110737&parId=4C1040608517D40B%21110734&o=OneUp
 
 1.資料庫檔案為放在同一籃雞蛋模式 >備份很重要
 備份模式
@@ -165,6 +166,7 @@ LEFT JOIN 、 INNER JOIN
 ◦RIGHT OUTER JOIN◦關連線右側資料較多
 ◦CROSS JOIN◦未設定關連而形成交叉對應朱克剛資料庫14
 
-功課
+0729功課
 //所有屋子的住戶清單 (限用右側外部連結)
 //把SQL 指令 PO在GITHUB上面
+
