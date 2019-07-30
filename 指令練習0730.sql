@@ -69,12 +69,13 @@ from(
 )as bb
 where aaa.max_n = bb.n
 
+//列出電話的人
 select cname ,c.tel
 from userinfo as a, live as b,phone as c
 where 
 a.uid = b.uid and
 b.hid = c.hid
-
+//計算電話的人
 select userinfo.uid, count(tel) as n
 from userinfo left join live on
     userinfo.uid = live.uid
@@ -83,7 +84,7 @@ from userinfo left join live on
     group by userinfo.uid
 
 
-//最多電話費
+//最多電話的人 (count join)
 select uid,max_n
 from(
     select max(n) as max_n
@@ -104,6 +105,7 @@ from(
     group by userinfo.uid
 )as bb
 where aa.max_n = bb.n
+
 //第二種方式
 select cname,max_n
 from(
@@ -132,8 +134,61 @@ where
 a.uid = b.uid and
 b.hid = c.hid
 
+//limit 練習(列出最大的)    排序最高的電話費總和
+------------------------------------
+    select sum(fee) as sum_fee 
+    from bill 
+    group by tel
+    order by sum_fee desc
+    limit 1
+--------------------------------------  
+select tel, aa.sum_fee
+from(
+    select sum(fee) as sum_fee 
+    from bill 
+    group by tel
+    order by sum_fee desc
+    limit 1
+)as aa,(
+    select tel,sum(fee) as sum_fee 
+    from bill 
+    group by tel
+)as bb
+where aa.sum_fee = bb.sum_fee;
+------------------------------------------
+//HAVING 列出平均
+SELECT tel, avg(fee)
+FROM bill 
+GROUP BY telHAVING avg(fee) > 300
 
+----------------------------------------
+//創立檢視表
+create view vw_惠我良多 as
+select tel, aa.sum_fee
+from(
+    select sum(fee) as sum_fee 
+    from bill 
+    group by tel
+    order by sum_fee desc
+    limit 1
+)as aa,(
+    select tel,sum(fee) as sum_fee 
+    from bill 
+    group by tel
+)as bb
+where aa.sum_fee = bb.sum_fee;
 
+select * from vw_惠我良多
 
+------------------------------------
+DELETE TRUNCATE 救不回來
+刪除所有電話帳單資料
+DELETE FROM bill TRUNCATE TABLE bill
 
+刪除孫小毛資料
+DELETE FROM userinfoWHERE uid= 'B01'
+
+------------------------------------
+時間
+select concat(date_format(now(),'西元第%Y年'),'第',quarter(now()),'季');
 

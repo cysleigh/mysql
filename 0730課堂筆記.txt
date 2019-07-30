@@ -1,3 +1,16 @@
 //UNION ALL (硬補一筆資料上去)
 目的：合併兩個一模一樣的查詢結果
 
+//宣告交易開始 最後要告訴資料庫rollback或commit 不然其他使用者會timeout
+
+//0730功課
+建立資料庫表
+>要ER表
+>客戶資料表，含頭像資料 欄位名稱開BLOB、BASE64 function 都可以轉成文字型態
+>商品資料表，含有八個影像資料
+>交易資料表，含有交易時間紀錄
+
+//MYSQL 資料文字相加藥用concat
+
+select concat(date_format(now(),'西元第%Y年'),'第',quarter(now()),'季');
+
