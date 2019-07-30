@@ -192,3 +192,7 @@ DELETE FROM userinfoWHERE uid= 'B01'
 時間
 select concat(date_format(now(),'西元第%Y年'),'第',quarter(now()),'季');
 
+//轉換幾歲
+SELECT cname,YEAR(FROM_DAYS(datediff(NOW(),BD)) )
+FROM userinfo
+
