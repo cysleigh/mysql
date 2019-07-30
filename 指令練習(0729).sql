@@ -30,16 +30,18 @@ select tel,avg(fee) from bill group by tel;
 //sql 取小數點下幾位 round
 select tel,round(avg(fee),0) from bill group by tel;
 
-//avg為算出來的  所以group by 也要一起算才能正確'
+//avg為算出來的  所以group by 也要一起算才能正確
 select bill.tel,round(avg(fee),0) as '平均金額',phone.hid
 from bill ,phone 
 where bill.hid = phone.hid
 group by bill.tel,phone.hid
 
-//avg為算出來的  所以group by 也要一起算才能正確'
+//avg為算出來的  所以group by 也要一起算才能正確
 select bill.tel,round(avg(fee),0) as '平均金額',address
 from bill ,phone ,house
 where bill.hid = phone.hid and phone.hid = house.hid
 group by bill.tel,address
 
+//帳單分類總和
+select tel,sum(fee) as sum_fee from bill group by tel;
 
