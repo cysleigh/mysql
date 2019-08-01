@@ -15,3 +15,6 @@
 select concat(date_format(now(),'西元第%Y年'),'第',quarter(now()),'季');
 
 
+//mysql random
+
+
